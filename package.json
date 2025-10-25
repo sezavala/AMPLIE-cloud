@@ -3,23 +3,54 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "nodemon --watch src --ext ts --exec \"npx tsx src/index.ts\"",
+    "start": "node dist/local.js",
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "vercel-build": "tsc -p tsconfig.json",
+    "test": "echo \"(add tests later)\"",
+    "pm:test:local": "newman run postman/collections/amplie-api.postman_collection.json -e postman/environments/local.postman_environment.json -r cli,htmlextra --reporter-htmlextra-export postman/reports/local.html",
+    "pm:test:staging": "newman run postman/collections/amplie-api.postman_collection.json -e postman/environments/staging.postman_environment.json -r cli,htmlextra --reporter-htmlextra-export postman/reports/staging.html"
   },
   "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/sensible": "^6.0.3",
+    "dotenv": "^17.2.3",
+    "fastify": "^5.6.1",
+    "jose": "^6.1.0",
+    "next": "16.0.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "next": "16.0.0"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "babel-plugin-react-compiler": "1.0.0",
-    "typescript": "^5",
-    "@types/node": "^20",
+    "@types/node": "^20.19.23",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.0"
-  }
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9.38.0",
+    "eslint-config-next": "16.0.0",
+    "newman": "^6.2.1",
+    "newman-reporter-htmlextra": "^1.23.1",
+    "nodemon": "^3.1.10",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sezavala/AMPLIE-cloud.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sezavala/AMPLIE-cloud/issues"
+  },
+  "homepage": "https://github.com/sezavala/AMPLIE-cloud#readme"
 }
