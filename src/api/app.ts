@@ -4,6 +4,7 @@ import helmet from "@fastify/helmet";
 import sensible from "@fastify/sensible";
 import authPlugin from "../app/middleware/auth.js";
 import { ENV } from "../app/env.js";
+import policyRoutes from "./routes/policy.js";
 
 export function buildApp() {
   // Create Fastify instance and set logger
@@ -24,6 +25,8 @@ export function buildApp() {
   app.register(sensible);
   // Register our auth plugin
   app.register(authPlugin);
+  // Register policy routes for emotion/mode -> fixture
+  app.register(policyRoutes);
 
   // GET route for health, currently just returing OK status
   app.get("/health", async () => {
