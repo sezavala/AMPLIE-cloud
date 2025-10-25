@@ -5,6 +5,7 @@ import sensible from "@fastify/sensible";
 import authPlugin from "../app/middleware/auth.js";
 import { ENV } from "../app/env.js";
 import policyRoutes from "./routes/policy.js";
+import emotionRoutes from "./routes/emotion.js";
 
 export function buildApp() {
   // Create Fastify instance and set logger
@@ -27,6 +28,8 @@ export function buildApp() {
   app.register(authPlugin);
   // Register policy routes for emotion/mode -> fixture
   app.register(policyRoutes);
+  // Register emotionRoutes for determining emotion based off of text / audio
+  app.register(emotionRoutes);
 
   // GET route for health, currently just returing OK status
   app.get("/health", async () => {
