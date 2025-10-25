@@ -1,0 +1,58 @@
+name: Postman tests
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  local:
+    name: Newman (local)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Start API (adjust if your dev script differs)
+      - name: Start API
+        run: |
+          nohup npm run dev > api.log 2>&1 &
+          npx -y wait-on http://127.0.0.1:3000/health
+      - name: Run Postman (local)
+        run: npm run pm:test:local
+      - name: Upload Newman report (local)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-local
+          path: postman/reports/local.html
+
+  staging:
+    name: Newman (staging)
+    runs-on: ubuntu-latest
+    needs: local
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Override base_url and token at runtime
+      - name: Run Postman (staging)
+        run: |
+          npx newman run postman/collections/amplie-api.postman_collection.json \
+            -e postman/environments/staging.postman_environment.json \
+            --env-var base_url="${{ secrets.STAGING_BASE_URL }}" \
+            --env-var token="${{ secrets.STAGING_TOKEN }}" \
+            -r cli,htmlextra \
+            --reporter-htmlextra-export postman/reports/staging.html
+      - name: Upload Newman report (staging)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-staging
+          path: postman/reports/staging.html
