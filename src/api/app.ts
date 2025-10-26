@@ -7,6 +7,9 @@ import { ENV } from "../app/env.js";
 
 // Existing routes
 import policyRoutes from "./routes/policy.js";
+import emotionRoutes from "./routes/emotion.js";
+import embedRoutes from "./routes/embed.js";
+import retrieveRoutes from "./routes/retrieve.js";
 
 // New Fish Audio + S3 route
 import generateRoute from "./routes/generate.js"; // ✅ Add this line
@@ -30,6 +33,12 @@ export function buildApp() {
   // Business logic routes
   app.register(policyRoutes);
   app.register(generateRoute); // ✅ Register /generate route
+  // Register emotionRoutes for determining emotion based off of text / audio
+  app.register(emotionRoutes);
+  // Routes to create/get a collection and insert items (tracks)
+  app.register(embedRoutes);
+  // Routes to retrieve tracks from a collection
+  app.register(retrieveRoutes);
 
   // Health route
   app.get("/health", async () => {
