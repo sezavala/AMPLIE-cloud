@@ -13,6 +13,7 @@
     "pm:test:staging": "newman run postman/collections/amplie-api.postman_collection.json -e postman/environments/staging.postman_environment.json -r cli,htmlextra --reporter-htmlextra-export postman/reports/staging.html"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.917.0",
     "@fastify/cors": "^11.1.0",
     "@fastify/helmet": "^13.0.2",
     "@fastify/sensible": "^6.0.3",
