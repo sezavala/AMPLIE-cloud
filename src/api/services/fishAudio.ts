@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import fs from "fs";
 
 const FISH_API_KEY = process.env.FISH_API_KEY!;
@@ -14,7 +13,7 @@ export async function generateMusic(emotion: string) {
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${FISH_API_KEY}`,
+      Authorization: `Bearer ${FISH_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
