@@ -46,10 +46,10 @@ async function fetchBlendedPolicy(
 
     // Convert ShareAgent format to PolicyOutput format
     const policy: PolicyOutput = {
-      tempo: Math.round(data.policy.tempo * 120 + 60), // Convert 0-1 to 60-180 BPM
-      energy: data.policy.tempo, // Use tempo as energy proxy
+      tempo: Math.round(data.policy.tempo * 120 + 60),
+      energy: data.policy.tempo,
       valence: data.policy.valence,
-      genres: [], // ShareAgent doesn't return genres
+      genres: [],
     };
 
     console.log("[Room] Converted policy:", JSON.stringify(policy, null, 2));
@@ -207,11 +207,20 @@ const roomRoutes: FastifyPluginAsync = async (app) => {
       try {
         app.log.info(`Querying Chroma with policy:`, room.policy);
         const chroma = createChromaClient();
+
+        // Query using the ChromaClient's query method
         const result = await chroma.query("amplie_tracks_v1", room.policy, k);
-        items = result.results;
+
+        app.log.info(`Chroma query result:`, JSON.stringify(result, null, 2));
+
+        // Extract items from result
+        items = result.results || result.items || [];
+
         app.log.info(`Retrieved ${items.length} tracks from Chroma`);
       } catch (err) {
         app.log.error({ err }, "Failed to retrieve tracks from Chroma");
+        // Log more details
+        console.error("[Room] Chroma error details:", err);
       }
     } else {
       app.log.warn(
