@@ -80,23 +80,27 @@ export class ASIOneClientMock implements ASIOneClient {
 
 // ASI Client for prod using ENV
 export class ASIOneClientLive implements ASIOneClient {
-  // Create config object from environment variables
   constructor(
     private readonly cfg = {
-      baseUrl: ENV.ASIONE_URL!,
-      apiKey: ENV.ASIONE_API_KEY!,
+      baseUrl: ENV.ASIONE_URL!, // e.g., https://api.asione.ai/
+      apiKey: ENV.ASIONE_API_KEY!, // required in live
       timeoutMs: Number(ENV.ASIONE_TIMEOUT_MS ?? 8000),
       headerKey: ENV.ASIONE_HEADER_KEY || "Authorization",
       bearer: ENV.ASIONE_BEARER === "true",
+      version: (ENV as any).ASIONE_API_VERSION ?? "v2",
     }
   ) {}
 
-  // Sends a POST request to /policy endpoint
+  private endpoint(p: string) {
+    const base = this.cfg.baseUrl.endsWith("/")
+      ? this.cfg.baseUrl
+      : this.cfg.baseUrl + "/";
+    return new URL(p, base); // pass relative like "v2/policy"
+  }
+
   async getPolicy(input: PolicyInput): Promise<PolicyOutput> {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), this.cfg.timeoutMs);
-
-    // Set headers and token
     const headers: Record<string, string> = {
       "content-type": "application/json",
     };
@@ -106,11 +110,10 @@ export class ASIOneClientLive implements ASIOneClient {
     headers[this.cfg.headerKey] = token;
 
     try {
-      // POST policy endpoint
-      const res = await fetch(new URL("/policy", this.cfg.baseUrl), {
+      const url = this.endpoint(`${this.cfg.version}/policy`);
+      const res = await fetch(url, {
         method: "POST",
         headers,
-        // Turn input into a JSON
         body: JSON.stringify(input),
         signal: ctrl.signal,
       });
@@ -123,7 +126,6 @@ export class ASIOneClientLive implements ASIOneClient {
         err.status = res.status;
         throw err;
       }
-      // Retrieve policy output from our input
       const data = (await res.json()) as PolicyOutput;
       if (
         typeof data.tempo !== "number" ||
@@ -142,7 +144,12 @@ export class ASIOneClientLive implements ASIOneClient {
 
 export function createASIOneClient(): ASIOneClient {
   const useMock =
-    ENV.ASIONE_MODE === "mock" || !ENV.ASIONE_URL || !ENV.ASIONE_API_KEY;
+    (ENV.ASIONE_MODE ?? "").toLowerCase() === "mock" ||
+    !ENV.ASIONE_URL ||
+    !ENV.ASIONE_API_KEY;
 
-  return useMock ? new ASIOneClientMock() : new ASIOneClientLive();
+  if (useMock) {
+    return new ASIOneClientMock();
+  }
+  return new ASIOneClientLive();
 }

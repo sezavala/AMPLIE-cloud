@@ -6,6 +6,8 @@ import authPlugin from "../app/middleware/auth.js";
 import { ENV } from "../app/env.js";
 import policyRoutes from "./routes/policy.js";
 import emotionRoutes from "./routes/emotion.js";
+import embedRoutes from "./routes/embed.js";
+import retrieveRoutes from "./routes/retrieve.js";
 
 export function buildApp() {
   // Create Fastify instance and set logger
@@ -30,6 +32,10 @@ export function buildApp() {
   app.register(policyRoutes);
   // Register emotionRoutes for determining emotion based off of text / audio
   app.register(emotionRoutes);
+  // Routes to create/get a collection and insert items (tracks)
+  app.register(embedRoutes);
+  // Routes to retrieve tracks from a collection
+  app.register(retrieveRoutes);
 
   // GET route for health, currently just returing OK status
   app.get("/health", async () => {
