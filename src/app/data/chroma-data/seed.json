@@ -1,0 +1,68 @@
+[
+  {
+    "id": "trk_001",
+    "title": "Sunrise Drive",
+    "artist": "Nova Pulse",
+    "policy": {
+      "tempo": 128,
+      "energy": 0.85,
+      "valence": 0.9,
+      "genres": ["pop", "edm"]
+    }
+  },
+  {
+    "id": "trk_002",
+    "title": "Midnight Echoes",
+    "artist": "Luna Shade",
+    "policy": {
+      "tempo": 70,
+      "energy": 0.3,
+      "valence": 0.2,
+      "genres": ["ambient", "piano"]
+    }
+  },
+  {
+    "id": "trk_003",
+    "title": "Iron Pulse",
+    "artist": "Rift Engine",
+    "policy": {
+      "tempo": 140,
+      "energy": 0.95,
+      "valence": 0.2,
+      "genres": ["metal", "trap"]
+    }
+  },
+  {
+    "id": "trk_004",
+    "title": "Coffee Clouds",
+    "artist": "LoFuse",
+    "policy": {
+      "tempo": 90,
+      "energy": 0.4,
+      "valence": 0.7,
+      "genres": ["lofi", "jazz"]
+    }
+  },
+  {
+    "id": "trk_005",
+    "title": "Bright Horizon",
+    "artist": "Sky Relay",
+    "policy": {
+      "tempo": 110,
+      "energy": 0.6,
+      "valence": 0.8,
+      "genres": ["indie pop", "electropop"]
+    }
+  },
+  {
+    "id": "trk_006",
+    "title": "Night Fade",
+    "artist": "Quiet Frames",
+    "policy": {
+      "tempo": 60,
+      "energy": 0.2,
+      "valence": 0.3,
+      "genres": ["acoustic", "ambient"]
+    }
+  }
+]

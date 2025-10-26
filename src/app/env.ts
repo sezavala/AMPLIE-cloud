@@ -16,6 +16,7 @@ export const ENV = {
   ASIONE_TIMEOUT_MS: process.env.ASIONE_TIMEOUT_MS, // default 8000
   ASIONE_HEADER_KEY: process.env.ASIONE_HEADER_KEY, // default "Authorization"
   ASIONE_BEARER: process.env.ASIONE_BEARER,
+  ASIONE_API_VERSION: process.env.ASIONE_API_VERSION ?? "v2",
 
   GROQ_API_KEY: process.env.GROQ_API_KEY,
   GROQ_BASE_URL: process.env.GROQ_BASE_URL ?? "https://api.groq.com/openai/v1/",
@@ -23,4 +24,12 @@ export const ENV = {
   GROQ_TRANSCRIBE_MODEL:
     process.env.GROQ_TRANSCRIBE_MODEL ?? "whisper-large-v3-turbo",
   GROQ_TIMEOUT_MS: process.env.GROQ_TIMEOUT_MS ?? "1200",
+
+  // Chroma
+  CHROMA_URL: process.env.CHROMA_URL,
+  CHROMA_KEY: process.env.CHROMA_KEY,
+  CHROMA_TIMEOUT_MS: process.env.CHROMA_TIMEOUT_MS ?? "1500",
+  CHROMA_API_VERSION: process.env.CHROMA_API_VERSION ?? "v2",
+  CHROMA_TENANT: process.env.CHROMA_TENANT, // optional; defaults in client
+  CHROMA_DATABASE: process.env.CHROMA_DATABASE, // optional; defaults in client
 } as const;
